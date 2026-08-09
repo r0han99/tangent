@@ -1,13 +1,14 @@
 {
   "name": "tangent",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Margin comments for claude.ai. Highlight text, ask a question in a side bubble, never touch the main thread.",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pack": "node scripts/pack.mjs"
   },
   "author": "Rohan Sai Nalla",
   "license": "MIT",

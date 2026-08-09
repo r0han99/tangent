@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tangent — Margin notes for Claude</title>
+    <meta
+      name="description"
+      content="Highlight text on claude.ai, ask a question in a side bubble, and keep the main conversation untouched."
+    />
+    <link rel="icon" href="favicon/favicon.ico" sizes="any" />
+    <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Pixelify+Sans:wght@500;600;700&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="logo" href="index.html">Tangent</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#how">How it works</a>
+          <a href="#install">Install</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="https://github.com/r0han99/tangent">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="Introduction">
+        <div class="hero__copy">
+          <div class="hero__title-row">
+            <img
+              class="hero__mark"
+              src="tangent.png"
+              alt=""
+              width="112"
+              height="112"
+            />
+            <h1 class="hero__brand">Tangent</h1>
+          </div>
+          <p class="hero__headline">Margin notes for Claude.</p>
+          <p class="hero__lede">
+            Highlight any span in a reply, ask a short question beside it, and
+            leave the main thread alone.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn--primary" href="#install">Get the extension</a>
+            <a class="btn btn--ghost" href="https://github.com/r0han99/tangent"
+              >View source</a
+            >
+          </div>
+        </div>
+        <div class="hero__demo">
+          <video
+            class="hero__video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            width="1920"
+            height="1080"
+            aria-label="Tangent demo: highlight text on claude.ai and ask in a side bubble"
+          >
+            <source src="demo.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </section>
+
+      <section class="section" id="how">
+        <div class="wrap">
+          <h2 class="section__title">How it works</h2>
+          <p class="section__lede">
+            Three beats. No second login. No API key.
+          </p>
+          <ol class="steps">
+            <li>
+              <h3>Highlight</h3>
+              <p>
+                Select a span in any Claude message. Ask Tangent appears next to
+                Reply.
+              </p>
+            </li>
+            <li>
+              <h3>Ask</h3>
+              <p>
+                A bubble opens in the margin with just that excerpt and your
+                question.
+              </p>
+            </li>
+            <li>
+              <h3>Stay in the gutter</h3>
+              <p>
+                The answer streams into the bubble. Follow-ups stay there. The
+                main chat never changes.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section" id="quiet">
+        <div class="wrap">
+          <h2 class="section__title">What stays out of the way</h2>
+          <p class="section__lede">
+            Built for side questions that would otherwise derail the thread.
+          </p>
+          <ul class="points">
+            <li>
+              <h3>Main thread untouched</h3>
+              <p>
+                Each bubble is its own side conversation. Nothing is posted back
+                into the parent chat.
+              </p>
+            </li>
+            <li>
+              <h3>Your Claude session</h3>
+              <p>
+                Answers use the account you’re already signed into on claude.ai.
+                No Tangent servers.
+              </p>
+            </li>
+            <li>
+              <h3>Soft persistence</h3>
+              <p>
+                Margin threads save locally and reappear when you reload or
+                return to a conversation.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section install" id="install">
+        <div class="wrap">
+          <h2 class="section__title">Install</h2>
+          <p class="section__lede">
+            Load the unpacked build while the Chrome Web Store listing is in
+            review—or clone and build from source.
+          </p>
+          <ol>
+            <li>
+              Clone
+              <a href="https://github.com/r0han99/tangent">r0han99/tangent</a>
+              and run <code>npm install && npm run build</code>.
+            </li>
+            <li>
+              Open <code>chrome://extensions</code>, enable Developer mode, and
+              choose <strong>Load unpacked</strong> → the <code>dist/</code>
+              folder.
+            </li>
+            <li>
+              Open <a href="https://claude.ai">claude.ai</a>, highlight text in
+              a message, and click <strong>Ask Tangent</strong>.
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <span>Tangent · MIT</span>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="https://github.com/r0han99/tangent">GitHub</a>
+          <a href="https://github.com/r0han99/tangent/blob/main/LICENSE">License</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

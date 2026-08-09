@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tangent — Privacy Policy</title>
+    <meta
+      name="description"
+      content="Privacy policy for the Tangent Chrome extension."
+    />
+    <link rel="icon" href="favicon/favicon.ico" sizes="any" />
+    <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Pixelify+Sans:wght@500;600;700&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="logo" href="index.html">Tangent</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html#how">How it works</a>
+          <a href="index.html#install">Install</a>
+          <a href="privacy.html" aria-current="page">Privacy</a>
+          <a href="https://github.com/r0han99/tangent">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <h1>Privacy Policy</h1>
+      <p class="meta">Last updated: August 9, 2026</p>
+
+      <p>
+        Tangent is a Chrome extension that lets you highlight text on
+        <a href="https://claude.ai">claude.ai</a> and ask short questions in a
+        side bubble, without changing the main conversation. This policy
+        explains what data is involved and where it goes.
+      </p>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>Tangent does not run its own servers and does not collect analytics.</li>
+        <li>No third-party trackers, advertising SDKs, or remote code are used.</li>
+        <li>
+          Questions and excerpts are sent to <strong>claude.ai</strong> using your
+          existing signed-in session — the same service you are already using.
+        </li>
+        <li>
+          Bubble state is stored locally on your device via
+          <code>chrome.storage.local</code>.
+        </li>
+      </ul>
+
+      <h2>Data Tangent handles</h2>
+      <p>When you use Tangent, the extension may process:</p>
+      <ul>
+        <li>Text you highlight on claude.ai (the excerpt).</li>
+        <li>Nearby paragraph text used only to resolve references in that excerpt.</li>
+        <li>Questions and follow-ups you type in a bubble.</li>
+        <li>Model replies streamed into that bubble.</li>
+        <li>
+          Preferences you set on the options page (for example, default model and
+          archive-on-close).
+        </li>
+        <li>
+          Bubble metadata needed to restore margin threads (titles, message
+          history, and anchors within a conversation).
+        </li>
+      </ul>
+
+      <h2>Where data goes</h2>
+      <p>
+        <strong>claude.ai.</strong> To answer a tangent, Tangent creates a side
+        thread and sends your prompt through claude.ai’s web app APIs from the
+        page context. Requests use your existing browser session with Claude. The
+        developer of Tangent does not receive these messages.
+      </p>
+      <p>
+        <strong>Your device.</strong> Bubble content and preferences are stored
+        locally with Chrome’s extension storage so threads can survive a refresh
+        or when you return to a conversation. This data stays on your machine
+        unless you sync Chrome data through your own Google account settings.
+      </p>
+      <p>
+        <strong>No Tangent backend.</strong> Tangent does not transmit your
+        highlights, questions, or replies to any server operated by the
+        extension author.
+      </p>
+
+      <h2>Permissions</h2>
+      <ul>
+        <li>
+          <code>storage</code> — save preferences and soft-persist margin
+          bubbles locally.
+        </li>
+        <li>
+          Content script on <code>https://claude.ai/*</code> — show the
+          highlight UI, gutter, and bubbles on that site only.
+        </li>
+      </ul>
+
+      <h2>Data retention and deletion</h2>
+      <p>
+        Local bubble data remains until you dismiss bubbles, clear extension
+        storage, or uninstall Tangent. Removing the extension deletes its local
+        storage. Content sent to claude.ai is subject to Anthropic’s own
+        retention and privacy terms for your Claude account.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        Tangent is not directed at children under 13. Do not use the extension if
+        you are under 13.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If this policy changes in a material way, the “Last updated” date above
+        will be revised and the new version published at this URL.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy:
+        <a href="https://github.com/r0han99/tangent/issues">open an issue</a>
+        on the Tangent GitHub repository, or contact the author via GitHub at
+        <a href="https://github.com/r0han99">@r0han99</a>.
+      </p>
+
+      <hr />
+      <p class="meta">
+        Related:
+        <a href="https://github.com/r0han99/tangent">Source code</a> ·
+        <a href="https://www.anthropic.com/legal/privacy">Anthropic Privacy Policy</a>
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <span>Tangent · MIT</span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="https://github.com/r0han99/tangent">GitHub</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

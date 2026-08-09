@@ -28,6 +28,7 @@ npm install
 npm run dev      # Vite + HMR; load dist/ as an unpacked extension
 npm run build    # typecheck + production build into dist/
 npm run typecheck
+npm run pack     # build + zip dist/ for Chrome Web Store upload
 ```
 
 ### Load in Chrome
@@ -36,6 +37,21 @@ npm run typecheck
 2. Open `chrome://extensions`, enable **Developer mode**.
 3. **Load unpacked** → select the `dist/` folder.
 4. Open `claude.ai`, select text in any message, click **Ask Tangent**.
+
+## Chrome Web Store
+
+Store submission materials live in [`STORE.md`](./STORE.md).
+
+Public site (GitHub Pages from `main` / root):
+
+- Landing: https://r0han99.github.io/tangent/
+- Privacy: https://r0han99.github.io/tangent/privacy.html
+
+```bash
+npm run pack   # writes tangent-<version>.zip at the repo root
+```
+
+Upload that zip in the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole). You still need screenshots; see the checklist in `STORE.md`.
 
 ## Project layout
 
@@ -74,8 +90,9 @@ await window.__tangent.streamReply(res, (d) => console.log(d));
   can change without notice. When something breaks, re-observe the network tab and
   fix `src/api/client.ts` — nothing else touches the network. The request shapes in
   that file are best-effort and should be verified against live traffic.
-- **No persistence.** Bubbles live for the session; a reload clears them (PRD §4, §10).
+- **Soft persistence.** Bubbles are saved per conversation in `chrome.storage.local`
+  and re-anchored when you reload or return to the thread. If the excerpt is gone
+  from the DOM, that bubble is skipped silently.
 - **Chromium only.** Requires the CSS Custom Highlight API (Chrome 105+).
 - **Terms of service.** This drives your own session from your own browser. Review
   Anthropic's usage policies before relying on it (PRD §9).
-```
