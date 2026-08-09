@@ -1,0 +1,374 @@
+/* Tangent gutter + bubbles. Scoped under #tangent-gutter-root and .tg-* so we
+   never leak styles into the host claude.ai page. */
+
+/* ---- Highlights (PRD 6.2) ------------------------------------------------ */
+::highlight(tangent-idle) {
+  background-color: rgba(217, 119, 87, 0.18);
+  color: inherit;
+}
+::highlight(tangent-active) {
+  background-color: rgba(217, 119, 87, 0.38);
+  color: inherit;
+}
+
+/* ---- Ask affordance (PRD 7) — right of Claude's Reply ------------------ */
+#tangent-ask-affordance {
+  z-index: 2147483646;
+  display: none;
+  padding: 6px 12px;
+  font: 500 14px/1.2 ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: #fff;
+  background: #d97757;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  gap: 6px;
+}
+#tangent-ask-affordance[data-visible="true"] {
+  display: inline-flex;
+  align-items: center;
+}
+#tangent-ask-affordance:hover {
+  background: #c9684a;
+}
+#tangent-ask-affordance .tg-ask-icon {
+  flex: none;
+  display: block;
+}
+/* Injected into [data-selection-tooltip] flex row, after Reply. */
+#tangent-ask-affordance[data-mounted="tooltip"] {
+  position: static;
+  margin-left: 2px;
+  box-shadow: none;
+}
+/* Fallback while the tooltip mounts. */
+#tangent-ask-affordance[data-mounted="fixed"] {
+  position: fixed;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* ---- Gutter container ---------------------------------------------------- */
+#tangent-gutter-root {
+  font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, sans-serif;
+  color: #1f1f1f;
+}
+
+.tg-gutter {
+  position: fixed;
+  top: 0;
+  /* `left` set inline from the text column's right edge */
+  height: 100vh;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 2147483645;
+  transition: left 120ms ease;
+}
+
+.tg-bubble-wrap {
+  position: absolute;
+  left: 0;
+  pointer-events: auto;
+  /* No top transition — position tracks the highlight 1:1 while scrolling. */
+}
+
+/* ---- Connector line (PRD 6.3) ------------------------------------------- */
+.tg-connector {
+  position: absolute;
+  left: -10px;
+  width: 2px;
+  background: rgba(201, 100, 66, 0.5);
+  pointer-events: none;
+}
+.tg-connector::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 2px;
+  background: rgba(201, 100, 66, 0.5);
+}
+
+/* ---- Bubble -------------------------------------------------------------- */
+.tg-bubble {
+  background: #fff;
+  border: 1px solid #e5e0da;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.tg-bubble--active {
+  border-color: #c96442;
+  box-shadow: 0 6px 20px rgba(201, 100, 66, 0.18);
+}
+.tg-bubble--collapsed {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.tg-bubble-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 8px 6px;
+  border-bottom: 1px solid #f0ece7;
+  background: #faf8f6;
+  transition: border-color 160ms ease;
+}
+.tg-bubble--collapsed .tg-bubble-header {
+  border-bottom-color: transparent;
+}
+
+/* Smooth collapse to the quote strip only. */
+.tg-bubble-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 220ms ease, opacity 180ms ease;
+  opacity: 1;
+}
+.tg-bubble--collapsed .tg-bubble-body {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+}
+.tg-bubble-body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.tg-quote {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  cursor: pointer;
+  border-left: 3px solid #d9a58f;
+  border-radius: 0 4px 4px 0;
+}
+.tg-quote-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12px;
+  font-style: italic;
+  color: #6b6259;
+}
+
+.tg-icon-btn {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: none;
+  color: #8a8177;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 0;
+  padding: 0;
+}
+.tg-icon-btn svg {
+  display: block;
+}
+.tg-icon-btn:hover {
+  background: #efe9e3;
+  color: #4a443c;
+}
+.tg-expand-btn {
+  color: #ffffff;
+  background: rgba(201, 100, 66, 0.9);
+}
+.tg-expand-btn:hover {
+  background: #c96442;
+  color: #ffffff;
+}
+.tg-close {
+  color: #a59c92;
+}
+
+/* ---- Messages ------------------------------------------------------------ */
+.tg-messages {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.tg-msg {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+}
+.tg-msg--user {
+  align-self: flex-end;
+  max-width: 90%;
+  background: #f1ede9;
+  color: #2b2b2b;
+  padding: 6px 10px;
+  border-radius: 10px 10px 2px 10px;
+}
+.tg-msg--assistant {
+  color: #2b2b2b;
+}
+.tg-thinking {
+  color: #a59c92;
+}
+
+.tg-caret {
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  margin-left: 1px;
+  background: #c96442;
+  vertical-align: text-bottom;
+  animation: tg-blink 1s steps(2, start) infinite;
+}
+@keyframes tg-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ---- Error states (PRD 7) ------------------------------------------------ */
+.tg-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  background: #fdf1ec;
+  border: 1px solid #f2c9b8;
+  border-radius: 8px;
+  color: #9c4322;
+}
+.tg-retry {
+  flex: none;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #fff;
+  background: #c96442;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ---- Composer ------------------------------------------------------------ */
+.tg-composer {
+  border-top: 1px solid #f0ece7;
+  padding: 8px;
+}
+.tg-composer-input {
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  border: 1px solid #e5e0da;
+  border-radius: 8px;
+  padding: 7px 9px;
+  font: inherit;
+  font-size: 13px;
+  color: #1f1f1f;
+  background: #fff;
+  outline: none;
+}
+.tg-composer-input:focus {
+  border-color: #c96442;
+}
+.tg-composer-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.tg-model-select {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  color: #6b6259;
+  background: #faf8f6;
+  border: 1px solid #e5e0da;
+  border-radius: 6px;
+  padding: 3px 4px;
+}
+.tg-usage {
+  font-size: 11px;
+  color: #a59c92;
+  white-space: nowrap;
+}
+.tg-send {
+  flex: none;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: #d97757;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.tg-send:disabled {
+  background: #d9c4bb;
+  cursor: not-allowed;
+}
+.tg-send:not(:disabled):hover {
+  background: #c9684a;
+}
+
+/* ---- Dark mode ----------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  #tangent-gutter-root {
+    color: #e8e3dd;
+  }
+  .tg-bubble {
+    background: #2a2724;
+    border-color: #3d3a36;
+  }
+  .tg-bubble-header {
+    background: #23211e;
+    border-color: #3d3a36;
+  }
+  .tg-icon-btn:hover {
+    background: #38342f;
+    color: #ece7e1;
+  }
+  .tg-expand-btn {
+    color: #ffffff;
+    background: rgba(201, 100, 66, 0.95);
+  }
+  .tg-expand-btn:hover {
+    background: #c96442;
+    color: #ffffff;
+  }
+  .tg-close {
+    color: #b8b1a8;
+  }
+  .tg-msg--user {
+    background: #38342f;
+    color: #ece7e1;
+  }
+  .tg-msg--assistant,
+  .tg-quote-text {
+    color: #d8d2cb;
+  }
+  .tg-composer,
+  .tg-composer-footer {
+    border-color: #3d3a36;
+  }
+  .tg-composer-input {
+    background: #1f1d1b;
+    border-color: #3d3a36;
+    color: #ece7e1;
+  }
+  .tg-model-select {
+    background: #23211e;
+    border-color: #3d3a36;
+    color: #b8b1a8;
+  }
+}
