@@ -1,14 +1,21 @@
-# Tangent
+<p align="center">
+  <img src="tangent.png" alt="Tangent logo" width="120" />
+</p>
 
-Margin comments for [claude.ai](https://claude.ai). Highlight any span of a Claude
-message, a bubble opens in a right-hand gutter next to that text, and you ask a
-short question about just that excerpt. The answer streams into the bubble. **The
-main conversation is never touched.**
+<h1 align="center">Tangent</h1>
+
+<p align="center">
+  Margin comments for <a href="https://claude.ai">claude.ai</a>
+</p>
+
+Highlight any span of a Claude message, a bubble opens in a right-hand gutter next
+to that text, and you ask a short question about just that excerpt. The answer
+streams into the bubble. **The main conversation is never touched.**
 
 The model behind the bubble is your own already-authenticated Claude session — no
 second login, no API key.
 
-> Chrome extension, Manifest V3. See [`tangent-prd-mvp.md`](./tangent-prd-mvp.md) for the full product spec.
+> Chrome extension, Manifest V3. See [`tangent-prd-mvp.md`](./tangent-prd-mvp.md) for the full product spec. · [Site](https://r0han99.github.io/tangent/)
 
 ## How it works
 
