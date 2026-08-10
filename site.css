@@ -558,7 +558,8 @@ code {
   color: var(--muted);
 }
 
-.submit .cta-row {
+.submit .cta-row,
+.install .cta-row {
   margin-top: 1.25rem;
   animation: none;
 }

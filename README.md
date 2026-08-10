@@ -8,6 +8,15 @@
   Margin comments for <a href="https://claude.ai">claude.ai</a>
 </p>
 
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi">
+    <img
+      src="https://img.shields.io/badge/Chrome_Web_Store-Add_to_Chrome-D97757?style=for-the-badge&logo=googlechrome&logoColor=white"
+      alt="Add to Chrome — Chrome Web Store"
+    />
+  </a>
+</p>
+
 Highlight any span of a Claude message, a bubble opens in a right-hand gutter next
 to that text, and you ask a short question about just that excerpt. The answer
 streams into the bubble. **The main conversation is never touched.**
@@ -15,7 +24,7 @@ streams into the bubble. **The main conversation is never touched.**
 The model behind the bubble is your own already-authenticated Claude session — no
 second login, no API key.
 
-> Chrome extension, Manifest V3. See [`tangent-prd-mvp.md`](./tangent-prd-mvp.md) for the full product spec. · [Site](https://r0han99.github.io/tangent/)
+> Chrome extension, Manifest V3. [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi) · [Site](https://r0han99.github.io/tangent/) · [`tangent-prd-mvp.md`](./tangent-prd-mvp.md)
 
 ## How it works
 
@@ -47,7 +56,7 @@ npm run pack     # build + zip dist/ for Chrome Web Store upload
 
 ## Chrome Web Store
 
-Store submission materials live in [`STORE.md`](./STORE.md).
+**Install:** [Tangent on the Chrome Web Store](https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi)
 
 Public site (GitHub Pages from `main` / root):
 
@@ -55,11 +64,11 @@ Public site (GitHub Pages from `main` / root):
 - Roadmap: https://r0han99.github.io/tangent/roadmap.html
 - Privacy: https://r0han99.github.io/tangent/privacy.html
 
+Listing / pack notes for updates live in [`STORE.md`](./STORE.md). For a new store build:
+
 ```bash
 npm run pack   # writes tangent-<version>.zip at the repo root
 ```
-
-Upload that zip in the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole). You still need screenshots; see the checklist in `STORE.md`.
 
 ## Project layout
 
