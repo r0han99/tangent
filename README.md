@@ -52,6 +52,7 @@ Store submission materials live in [`STORE.md`](./STORE.md).
 Public site (GitHub Pages from `main` / root):
 
 - Landing: https://r0han99.github.io/tangent/
+- Roadmap: https://r0han99.github.io/tangent/roadmap.html
 - Privacy: https://r0han99.github.io/tangent/privacy.html
 
 ```bash

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tangent — Roadmap</title>
+    <meta
+      name="description"
+      content="Planned Tangent updates: persistence patches, then ChatGPT + Claude in v2. Submit feature requests via GitHub Issues."
+    />
+    <link rel="icon" href="favicon/favicon.ico" sizes="any" />
+    <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Pixelify+Sans:wght@500;600;700&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="site.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="logo" href="index.html">Tangent</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html#how">How it works</a>
+          <a href="index.html#install">Install</a>
+          <a href="roadmap.html" aria-current="page">Roadmap</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="https://github.com/r0han99/tangent">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <h1>Roadmap</h1>
+      <p class="meta">Where Tangent is headed next.</p>
+
+      <p>
+        Soft persistence shipped in v1. Upcoming work hardens that layer, then
+        opens the same margin-note flow beyond Claude.
+      </p>
+
+      <ol class="roadmap">
+        <li>
+          <span class="roadmap__tag roadmap__tag--now">Shipped</span>
+          <h2>v1 — Claude margin notes</h2>
+          <p>
+            Highlight on claude.ai, ask in a side bubble, soft-persist threads
+            per conversation. Chrome Web Store listing in review.
+          </p>
+        </li>
+        <li>
+          <span class="roadmap__tag roadmap__tag--next">Next</span>
+          <h2>Persistence patches</h2>
+          <p>
+            Coming updates focus on re-anchoring reliability, clearer restore
+            behavior after long absences, and edge cases when Claude’s DOM or
+            message layout shifts. No product surface change—more durable
+            bubbles.
+          </p>
+        </li>
+        <li>
+          <span class="roadmap__tag roadmap__tag--later">Later</span>
+          <h2>v2 — Claude + ChatGPT</h2>
+          <p>
+            Generalize Tangent so the same gutter experience works on both
+            <strong>claude.ai</strong> and <strong>ChatGPT</strong>, with a
+            shared interaction model and host-specific adapters under the hood.
+          </p>
+        </li>
+      </ol>
+
+      <hr />
+
+      <section class="submit" id="submit" aria-labelledby="submit-title">
+        <h2 id="submit-title">Feature submission</h2>
+        <p>
+          Want something on the board? Open a GitHub issue and apply the
+          <code>feature</code> label (or use the button below—it preselects
+          that label). We use Issues for requests and bugs; labels keep them
+          sorted.
+        </p>
+        <div class="cta-row">
+          <a
+            class="btn btn--primary"
+            href="https://github.com/r0han99/tangent/issues/new?labels=feature&amp;title=%5BFeature%5D%20"
+            >Submit a feature</a
+          >
+          <a
+            class="btn btn--ghost"
+            href="https://github.com/r0han99/tangent/issues?q=is%3Aissue+label%3Afeature"
+            >Browse feature requests</a
+          >
+        </div>
+        <p class="meta submit__hint">
+          Bugs: open an issue with the <code>bug</code> label instead.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <span>Tangent · MIT</span>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="roadmap.html">Roadmap</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="https://github.com/r0han99/tangent">GitHub</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
