@@ -3,14 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tangent — Privacy Policy</title>
+    <title>Offthread — Privacy Policy</title>
     <meta
       name="description"
-      content="Privacy policy for the Tangent Chrome extension."
+      content="Privacy policy for the Offthread Chrome extension."
     />
     <link rel="icon" href="favicon/favicon.ico" sizes="any" />
     <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="favicon/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,7 +23,25 @@
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="logo" href="index.html">Tangent</a>
+        <a class="logo" href="index.html"
+          >Offthread<svg
+            class="brand-thread"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2"
+            ></path>
+          </svg>
+        </a>
         <nav class="nav" aria-label="Primary">
           <a href="index.html#how">How it works</a>
           <a
@@ -41,19 +60,24 @@
       <p class="meta">Last updated: August 9, 2026</p>
 
       <p>
-        Tangent is a Chrome extension that lets you highlight text on
-        <a href="https://claude.ai">claude.ai</a> and ask short questions in a
-        side bubble, without changing the main conversation. This policy
-        explains what data is involved and where it goes.
+        Offthread is a Chrome extension that lets you highlight text on
+        <a href="https://claude.ai">claude.ai</a>,
+        <a href="https://chatgpt.com">ChatGPT</a>, or
+        <a href="https://gemini.google.com">Gemini</a>
+        and ask short questions in a side bubble, without changing the main
+        conversation. This policy explains what data is involved and where it
+        goes.
       </p>
 
       <h2>Summary</h2>
       <ul>
-        <li>Tangent does not run its own servers and does not collect analytics.</li>
+        <li>Offthread does not run its own servers and does not collect analytics.</li>
         <li>No third-party trackers, advertising SDKs, or remote code are used.</li>
         <li>
-          Questions and excerpts are sent to <strong>claude.ai</strong> using your
-          existing signed-in session — the same service you are already using.
+          Questions and excerpts are sent to the host you are on
+          (<strong>claude.ai</strong>, <strong>chatgpt.com</strong>, or
+          <strong>gemini.google.com</strong>) using your existing signed-in
+          session.
         </li>
         <li>
           Bubble state is stored locally on your device via
@@ -61,10 +85,10 @@
         </li>
       </ul>
 
-      <h2>Data Tangent handles</h2>
-      <p>When you use Tangent, the extension may process:</p>
+      <h2>Data Offthread handles</h2>
+      <p>When you use Offthread, the extension may process:</p>
       <ul>
-        <li>Text you highlight on claude.ai (the excerpt).</li>
+        <li>Text you highlight on Claude, ChatGPT, or Gemini (the excerpt).</li>
         <li>Nearby paragraph text used only to resolve references in that excerpt.</li>
         <li>Questions and follow-ups you type in a bubble.</li>
         <li>Model replies streamed into that bubble.</li>
@@ -80,19 +104,19 @@
 
       <h2>Where data goes</h2>
       <p>
-        <strong>claude.ai.</strong> To answer a tangent, Tangent creates a side
-        thread and sends your prompt through claude.ai’s web app APIs from the
-        page context. Requests use your existing browser session with Claude. The
-        developer of Tangent does not receive these messages.
+        <strong>The model provider.</strong> On Claude, Offthread uses your
+        logged-in session in the page. On ChatGPT and Gemini, it calls the
+        official OpenAI or Google Generative Language API with a key you provide
+        in Options. The developer of Offthread does not receive these messages.
       </p>
       <p>
-        <strong>Your device.</strong> Bubble content and preferences are stored
-        locally with Chrome’s extension storage so threads can survive a refresh
-        or when you return to a conversation. This data stays on your machine
-        unless you sync Chrome data through your own Google account settings.
+        <strong>Your device.</strong> Bubble content, preferences, and any API
+        key you enter are stored locally with Chrome’s extension storage so
+        threads can survive a refresh. This data stays on your machine unless
+        you sync Chrome data through your own Google account settings.
       </p>
       <p>
-        <strong>No Tangent backend.</strong> Tangent does not transmit your
+        <strong>No Offthread backend.</strong> Offthread does not transmit your
         highlights, questions, or replies to any server operated by the
         extension author.
       </p>
@@ -104,22 +128,23 @@
           bubbles locally.
         </li>
         <li>
-          Content script on <code>https://claude.ai/*</code> — show the
-          highlight UI, gutter, and bubbles on that site only.
+          Content scripts on <code>claude.ai</code>, <code>chatgpt.com</code>,
+          <code>chat.openai.com</code>, and <code>gemini.google.com</code> —
+          show the highlight UI, gutter, and bubbles on those sites only.
         </li>
       </ul>
 
       <h2>Data retention and deletion</h2>
       <p>
         Local bubble data remains until you dismiss bubbles, clear extension
-        storage, or uninstall Tangent. Removing the extension deletes its local
-        storage. Content sent to claude.ai is subject to Anthropic’s own
-        retention and privacy terms for your Claude account.
+        storage, or uninstall Offthread. Removing the extension deletes its local
+        storage.         Content sent to a host is subject to that company’s own retention and
+        privacy terms (Anthropic, OpenAI, or Google).
       </p>
 
       <h2>Children</h2>
       <p>
-        Tangent is not directed at children under 13. Do not use the extension if
+        Offthread is not directed at children under 13. Do not use the extension if
         you are under 13.
       </p>
 
@@ -133,7 +158,7 @@
       <p>
         Questions about this policy:
         <a href="https://github.com/r0han99/tangent/issues">open an issue</a>
-        on the Tangent GitHub repository, or contact the author via GitHub at
+        on the Offthread GitHub repository, or contact the author via GitHub at
         <a href="https://github.com/r0han99">@r0han99</a>.
       </p>
 
@@ -147,7 +172,7 @@
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <span>Tangent · MIT</span>
+        <span>Offthread · MIT</span>
         <div class="footer-links">
           <a href="index.html">Home</a>
           <a href="roadmap.html">Roadmap</a>

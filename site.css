@@ -5,8 +5,8 @@
   --muted: #5c5f66;
   --line: rgba(20, 20, 20, 0.1);
   --grid: #d0d2d6;
-  --accent: #d97757;
-  --accent-hover: #c9684a;
+  --accent: #4a0a77;
+  --accent-hover: #5a108f;
   --surface: rgba(244, 245, 247, 0.88);
   --max: 68rem;
   --pad: clamp(1.25rem, 4vw, 2.5rem);
@@ -102,6 +102,9 @@ code {
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
   font-family: var(--font-brand);
   font-weight: 700;
   font-size: 1.35rem;
@@ -113,6 +116,18 @@ code {
 .logo:hover {
   color: #fff;
   opacity: 0.92;
+}
+
+.brand-thread {
+  width: 0.85em;
+  height: 0.85em;
+  flex-shrink: 0;
+  display: block;
+}
+
+.logo .brand-thread {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .nav {
@@ -219,12 +234,21 @@ code {
 }
 
 .hero__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.12em;
   font-family: var(--font-brand);
   font-weight: 700;
   font-size: clamp(4.25rem, 14vw, 7.5rem);
   line-height: 0.95;
   letter-spacing: -0.02em;
   margin: 0;
+}
+
+.hero__brand .brand-thread {
+  width: 0.72em;
+  height: 0.72em;
+  margin-top: 0.06em;
 }
 
 .hero__headline {
@@ -303,15 +327,15 @@ code {
   margin-block: 0 clamp(1rem, 3vh, 1.75rem);
   justify-self: center;
   border-radius: 16px;
-  border: 1px solid rgba(217, 119, 87, 0.28);
+  border: 1px solid rgba(74, 10, 119), 0.28);
   overflow: hidden;
   background: #0f0f10;
   animation: rise-in 0.85s ease both 0.28s;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.35) inset,
     0 12px 28px rgba(20, 20, 20, 0.14),
-    0 28px 64px rgba(217, 119, 87, 0.28),
-    0 0 48px rgba(217, 119, 87, 0.22);
+    0 28px 64px rgba(74, 10, 119), 0.28),
+    0 0 48px rgba(74, 10, 119), 0.22);
 }
 
 .hero__video {
@@ -550,8 +574,8 @@ code {
 
 .roadmap__tag--next {
   color: var(--accent);
-  border-color: rgba(217, 119, 87, 0.4);
-  background: rgba(217, 119, 87, 0.12);
+  border-color: rgba(74, 10, 119), 0.4);
+  background: rgba(74, 10, 119), 0.12);
 }
 
 .roadmap__tag--later {

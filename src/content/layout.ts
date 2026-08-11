@@ -1,9 +1,5 @@
-import {
-  GUTTER_WIDTH,
-  GUTTER_GAP,
-  NARROW_VIEWPORT_THRESHOLD,
-  CONVERSATION_COLUMN_SELECTORS
-} from "@/config";
+import { GUTTER_WIDTH, GUTTER_GAP, NARROW_VIEWPORT_THRESHOLD } from "@/config";
+import { getHost } from "@/hosts/resolve";
 
 /**
  * Owns the host-page layout mutation. (PRD 6.1)
@@ -15,7 +11,7 @@ import {
 
 export type LayoutMode = "gutter" | "overlay";
 
-const STYLE_ID = "tangent-layout-style";
+const STYLE_ID = "offthread-layout-style";
 
 export interface LayoutState {
   mode: LayoutMode;
@@ -38,7 +34,7 @@ export class Layout {
   stop(): void {
     window.removeEventListener("resize", this.onResize);
     document.getElementById(STYLE_ID)?.remove();
-    document.documentElement.removeAttribute("data-tangent-mode");
+    document.documentElement.removeAttribute("data-offthread-mode");
   }
 
   getState(): LayoutState {
@@ -60,7 +56,7 @@ export class Layout {
   };
 
   private findColumn(): HTMLElement | null {
-    for (const selector of CONVERSATION_COLUMN_SELECTORS) {
+    for (const selector of getHost().columnSelectors) {
       const el = document.querySelector<HTMLElement>(selector);
       if (el) return el;
     }
@@ -82,13 +78,13 @@ export class Layout {
   }
 
   private applyMode(mode: LayoutMode): void {
-    document.documentElement.setAttribute("data-tangent-mode", mode);
+    document.documentElement.setAttribute("data-offthread-mode", mode);
     const style = this.ensureStyleEl();
     const reserve = GUTTER_WIDTH + GUTTER_GAP * 2;
     if (mode === "gutter") {
       style.textContent = `
-        :root { --tangent-gutter-width: ${GUTTER_WIDTH}px; }
-        html[data-tangent-mode="gutter"] main {
+        :root { --offthread-gutter-width: ${GUTTER_WIDTH}px; }
+        html[data-offthread-mode="gutter"] main {
           margin-right: ${reserve}px !important;
           transition: margin-right 160ms ease;
         }
@@ -96,7 +92,7 @@ export class Layout {
     } else {
       // Soft reserve: prefer not overlapping the chat column when there's room.
       style.textContent = `
-        :root { --tangent-gutter-width: ${GUTTER_WIDTH}px; }
+        :root { --offthread-gutter-width: ${GUTTER_WIDTH}px; }
       `;
     }
   }

@@ -8,7 +8,7 @@ https://r0han99.github.io/tangent/
 **Privacy policy URL:**  
 https://r0han99.github.io/tangent/privacy.html
 
-**Upload package:** run `npm run pack`, then upload `tangent-1.0.0.zip`.
+**Upload package:** run `npm run pack`, then upload `offthread-2.0.0.zip` to the **existing** item (do not create a new listing).
 
 ---
 
@@ -16,42 +16,41 @@ https://r0han99.github.io/tangent/privacy.html
 
 ### Name
 ```
-Tangent
+Offthread
 ```
 
 ### Summary (max 132 characters)
 ```
-Ask questions about highlighted Claude replies in side bubbles—without derailing the main conversation.
+Ask questions about highlighted Claude, ChatGPT, or Gemini replies in side bubbles—without derailing the main chat.
 ```
 
 ### Description
 ```
-Tangent adds margin notes to claude.ai. Highlight any span in a Claude message, click Ask Tangent, and ask a short question in a bubble next to the text. The answer streams into that bubble. Your main conversation stays untouched.
+Offthread (formerly Tangent) adds margin notes to Claude, ChatGPT, and Gemini. Highlight any span, click Ask Offthread, and ask a short question in a bubble next to the text. The answer streams into that bubble. Your main conversation stays untouched.
 
 Features
-• Ask Tangent button beside Claude’s Reply control
-• Side bubbles docked in the free space next to the message
-• Streaming answers from your existing Claude session (no API key)
+• Ask Offthread on Claude, ChatGPT, and Gemini
+• Side bubbles docked next to the message
+• Streaming answers from your existing session (no API key)
 • Follow-ups stay inside the bubble thread
-• Soft persistence: bubbles return when you reload or revisit a chat
+• Soft persistence per conversation
 • Collapsed chips that expand when you need them again
-• Options for default model and archive-on-close
 
 How to use
-1. Install Tangent and sign in to claude.ai as usual.
-2. Open a conversation and highlight text in a Claude message.
-3. Click Ask Tangent (next to Reply).
+1. Install Offthread and sign in to Claude, ChatGPT, or Gemini as usual.
+2. Open a conversation and highlight text in a reply.
+3. Click Ask Offthread.
 4. Type your question in the bubble and send.
 5. Click outside to collapse; expand the chip later to continue.
 
 Requirements
 • Chromium-based browser with the CSS Custom Highlight API (Chrome 105+)
-• An active claude.ai session
+• An active session on the host you are using
 
 Notes
-• Tangent runs only on https://claude.ai/*
-• It uses your signed-in Claude session in the page; there is no separate Tangent account
-• claude.ai’s web APIs can change; if something breaks, check for an extension update
+• Runs on claude.ai, chatgpt.com, chat.openai.com, and gemini.google.com
+• Uses the signed-in session in the page; there is no separate Offthread account
+• Host web APIs can change; if something breaks, check for an extension update
 
 Site: https://r0han99.github.io/tangent/
 Source: https://github.com/r0han99/tangent
@@ -69,7 +68,7 @@ English
 ## Single purpose
 
 ```
-Provide margin Q&A on highlighted text in claude.ai conversations without modifying the main thread.
+Provide margin Q&A on highlighted text in AI chat products (Claude, ChatGPT, Gemini) without modifying the main thread.
 ```
 
 ---
@@ -81,9 +80,9 @@ Provide margin Q&A on highlighted text in claude.ai conversations without modify
 Stores extension preferences and soft-persists margin bubble threads (excerpt, messages, anchors) in chrome.storage.local so they survive refresh and returning to a conversation. Data stays on the user’s device.
 ```
 
-### Content script host: https://claude.ai/*
+### Content script hosts
 ```
-Injects only on claude.ai to capture text selection, paint highlights, and render the gutter UI and bubbles next to the conversation. No other sites are matched.
+Injects only on claude.ai, chatgpt.com, chat.openai.com, and gemini.google.com to capture text selection, paint highlights, and render the gutter UI. No other sites are matched.
 ```
 
 ---

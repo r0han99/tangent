@@ -7,16 +7,30 @@ import { isHighlightApiSupported, getRange } from "./highlight";
 import { startPersistence } from "./persistence";
 import { useStore } from "@/state/store";
 import { GUTTER_ROOT_ID, STORAGE_KEYS } from "@/config";
-import { DEFAULT_MODEL_ID } from "@/api/types";
+import { migrateLegacy } from "@/state/migrate";
 import * as api from "@/api/client";
+import { getHost } from "@/hosts/resolve";
+import { refreshChatgptModels } from "@/hosts/chatgpt";
+import { refreshGeminiModels } from "@/hosts/gemini";
+import { extensionAlive, onStorageChanged, syncGet } from "@/util/chrome";
 import "@/styles/gutter.css";
+
+async function refreshHostModels(): Promise<void> {
+  const host = getHost();
+  if (host.id === "chatgpt") {
+    await refreshChatgptModels();
+  } else if (host.id === "gemini") {
+    await refreshGeminiModels();
+  }
+  useStore.getState().setAvailableModels(host.models, host.defaultModel);
+}
 
 function boot(): void {
   // The CSS Custom Highlight API is a hard requirement (PRD 6.2). Without it we
   // cannot paint highlights without mutating React-owned DOM, so we bail loudly
   // rather than degrade into a broken experience.
   if (!isHighlightApiSupported()) {
-    console.warn("[Tangent] CSS Custom Highlight API unavailable (needs Chrome 105+). Disabled.");
+    console.warn("[Offthread] CSS Custom Highlight API unavailable (needs Chrome 105+). Disabled.");
     return;
   }
 
@@ -47,22 +61,24 @@ function boot(): void {
   startPersistence();
   exposeDevApi();
   void useStore.getState().refreshUsage();
+  void refreshHostModels();
 }
 
 /**
- * Expose the isolated network layer on window.__tangent so it can be exercised
- * from the devtools console against a scratch thread, independent of the UI.
- * (PRD M2) This is the only sanctioned way to poke the network directly.
+ * Dev hook: window.__offthread (and __tangent alias for old snippets).
  */
 function exposeDevApi(): void {
-  (window as unknown as { __tangent?: unknown }).__tangent = {
-    getOrgId: api.getOrgId,
+  const hook = {
     createThread: api.createThread,
     sendMessage: api.sendMessage,
     streamReply: api.streamReply,
     archiveThread: api.archiveThread,
-    getUsage: api.getUsage
+    getUsage: api.getUsage,
+    host: getHost().id
   };
+  const w = window as unknown as { __offthread?: unknown; __tangent?: unknown };
+  w.__offthread = hook;
+  w.__tangent = hook;
 }
 
 /** Clicking a painted highlight focuses its bubble. (PRD 7) */
@@ -90,28 +106,41 @@ function wireHighlightClicks(): void {
 }
 
 function loadPreferences(): void {
-  try {
-    chrome.storage?.sync.get(
-      [STORAGE_KEYS.defaultModel, STORAGE_KEYS.archiveOnClose],
-      (res) => {
-        const model = res?.[STORAGE_KEYS.defaultModel];
-        useStore.getState().setDefaultModel(typeof model === "string" ? model : DEFAULT_MODEL_ID);
-        useStore.getState().setArchiveOnClose(Boolean(res?.[STORAGE_KEYS.archiveOnClose]));
+  void (async () => {
+    try {
+      if (!extensionAlive()) {
+        useStore.getState().setDefaultModel(getHost().defaultModel);
+        return;
       }
-    );
-    // Keep the running content script in sync when options change.
-    chrome.storage?.onChanged.addListener((changes, area) => {
-      if (area !== "sync") return;
-      const model = changes[STORAGE_KEYS.defaultModel];
-      if (model && typeof model.newValue === "string") {
-        useStore.getState().setDefaultModel(model.newValue);
-      }
-      const archive = changes[STORAGE_KEYS.archiveOnClose];
-      if (archive) useStore.getState().setArchiveOnClose(Boolean(archive.newValue));
-    });
-  } catch {
-    useStore.getState().setDefaultModel(DEFAULT_MODEL_ID);
-  }
+      await migrateLegacy();
+      const res = await syncGet<Record<string, unknown>>([
+        STORAGE_KEYS.defaultModel,
+        STORAGE_KEYS.archiveOnClose
+      ]);
+      if (!extensionAlive()) return;
+      const model = res?.[STORAGE_KEYS.defaultModel];
+      const host = getHost();
+      const preferred = typeof model === "string" ? model : host.defaultModel;
+      const available = useStore.getState().availableModels;
+      const next =
+        available.some((m) => m.id === preferred) ? preferred : host.defaultModel;
+      useStore.getState().setDefaultModel(next);
+      useStore.getState().setArchiveOnClose(Boolean(res?.[STORAGE_KEYS.archiveOnClose]));
+
+      // Keep the running content script in sync when options change.
+      onStorageChanged((changes, area) => {
+        if (area !== "sync") return;
+        const modelChange = changes[STORAGE_KEYS.defaultModel];
+        if (modelChange && typeof modelChange.newValue === "string") {
+          useStore.getState().setDefaultModel(modelChange.newValue);
+        }
+        const archive = changes[STORAGE_KEYS.archiveOnClose];
+        if (archive) useStore.getState().setArchiveOnClose(Boolean(archive.newValue));
+      });
+    } catch {
+      useStore.getState().setDefaultModel(getHost().defaultModel);
+    }
+  })();
 }
 
 if (document.readyState === "loading") {

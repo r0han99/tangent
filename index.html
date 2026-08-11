@@ -3,14 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tangent — Margin notes for Claude</title>
+    <title>Offthread — Margin notes for Claude, ChatGPT, and Gemini</title>
     <meta
       name="description"
-      content="Highlight text on claude.ai, ask a question in a side bubble, and keep the main conversation untouched."
+      content="Highlight text in Claude, ChatGPT, or Gemini, ask a question in a side bubble, and keep the main conversation untouched."
     />
     <link rel="icon" href="favicon/favicon.ico" sizes="any" />
     <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="favicon/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,7 +23,25 @@
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="logo" href="index.html">Tangent</a>
+        <a class="logo" href="index.html"
+          >Offthread<svg
+            class="brand-thread"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2"
+            ></path>
+          </svg>
+        </a>
         <nav class="nav" aria-label="Primary">
           <a href="#how">How it works</a>
           <a
@@ -42,14 +61,32 @@
           <div class="hero__title-row">
             <img
               class="hero__mark"
-              src="tangent.png"
+              src="offthread-transparent.png"
               alt=""
               width="112"
               height="112"
             />
-            <h1 class="hero__brand">Tangent</h1>
+            <h1 class="hero__brand">
+              Offthread<svg
+                class="brand-thread"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2"
+                ></path>
+              </svg>
+            </h1>
           </div>
-          <p class="hero__headline">Margin notes for Claude.</p>
+          <p class="hero__headline">Margin notes for Claude, ChatGPT, and Gemini.</p>
           <p class="hero__lede">
             Highlight any span in a reply, ask a short question beside it, and
             leave the main thread alone.
@@ -75,7 +112,7 @@
             preload="metadata"
             width="1920"
             height="1080"
-            aria-label="Tangent demo: highlight text on claude.ai and ask in a side bubble"
+            aria-label="Offthread demo: highlight text and ask in a side bubble"
           >
             <source src="demo.mp4" type="video/mp4" />
           </video>
@@ -86,14 +123,15 @@
         <div class="wrap">
           <h2 class="section__title">How it works</h2>
           <p class="section__lede">
-            Three beats. No second login. No API key.
+            Three beats. Claude uses your logged-in session; ChatGPT and Gemini
+            need a provider API key of your choice (one key covers both).
           </p>
           <ol class="steps">
             <li>
               <h3>Highlight</h3>
               <p>
-                Select a span in any Claude message. Ask Tangent appears next to
-                Reply.
+                Select a span in a Claude, ChatGPT, or Gemini message. Ask
+                Offthread appears beside the host toolbar (or as a fixed chip).
               </p>
             </li>
             <li>
@@ -129,10 +167,11 @@
               </p>
             </li>
             <li>
-              <h3>Your Claude session</h3>
+              <h3>Your keys, your device</h3>
               <p>
-                Answers use the account you’re already signed into on claude.ai.
-                No Tangent servers.
+                Claude rides the session you’re already signed into. ChatGPT and
+                Gemini use an OpenAI or Gemini key you paste in Options — stored
+                only on this device. No Offthread servers.
               </p>
             </li>
             <li>
@@ -150,8 +189,8 @@
         <div class="wrap">
           <h2 class="section__title">Install</h2>
           <p class="section__lede">
-            Get Tangent from the Chrome Web Store, then open claude.ai and try a
-            highlight.
+            Get Offthread from the Chrome Web Store. Options opens on install —
+            add an API key if you’ll use ChatGPT or Gemini, then highlight away.
           </p>
           <div class="cta-row">
             <a
@@ -166,7 +205,7 @@
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <span>Tangent · MIT</span>
+        <span>Offthread · MIT</span>
         <div class="footer-links">
           <a href="roadmap.html">Roadmap</a>
           <a href="privacy.html">Privacy</a>

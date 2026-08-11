@@ -25,12 +25,11 @@ export interface ModelOption {
  * Best-effort model ids. claude.ai's web app may use different slugs than the
  * public API — confirm against a live completion Payload → `model` field.
  */
+/** Fallback model list (options page / unknown host). Live UI uses getHost().models. */
 export const MODELS: ModelOption[] = [
-  { id: "claude-haiku-4-5", label: "Haiku 4.5 (fast, default)" },
-  { id: "claude-sonnet-4-5", label: "Sonnet 4.5" },
-  { id: "claude-sonnet-4-6", label: "Sonnet 4.6" },
-  { id: "claude-opus-4-6", label: "Opus 4.6" },
-  { id: "claude-opus-4-7", label: "Opus 4.7" }
+  { id: "claude-haiku-4-5", label: "Claude · Haiku 4.5" },
+  { id: "gpt-4o", label: "GPT-Offthread" }, // ChatGPT host — locked
+  { id: "gemini-2.5-flash", label: "Gemini-Offthread" } // Gemini host — locked
 ];
 
 export const DEFAULT_MODEL_ID = MODELS[0].id;

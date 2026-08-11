@@ -19,7 +19,7 @@ import { deflateRawSync } from "node:zlib";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
-const outName = `tangent-${pkg.version}.zip`;
+const outName = `offthread-${pkg.version}.zip`;
 const outPath = join(root, outName);
 
 console.log("Building…");

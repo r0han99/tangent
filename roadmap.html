@@ -3,14 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tangent — Roadmap</title>
+    <title>Offthread — Roadmap</title>
     <meta
       name="description"
-      content="Planned Tangent updates: persistence patches, then ChatGPT + Claude in v2. Submit feature requests via GitHub Issues."
+      content="Planned Offthread updates: persistence patches, then ChatGPT + Claude in v2. Submit feature requests via GitHub Issues."
     />
     <link rel="icon" href="favicon/favicon.ico" sizes="any" />
     <link rel="icon" href="favicon/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="favicon/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,7 +23,25 @@
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="logo" href="index.html">Tangent</a>
+        <a class="logo" href="index.html"
+          >Offthread<svg
+            class="brand-thread"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M7 3.5c5-2 7 2.5 3 4C1.5 10 2 15 5 16c5 2 9-10 14-7s.5 13.5-4 12c-5-2.5.5-11 6-2"
+            ></path>
+          </svg>
+        </a>
         <nav class="nav" aria-label="Primary">
           <a href="index.html#how">How it works</a>
           <a
@@ -38,43 +57,43 @@
 
     <main class="page">
       <h1>Roadmap</h1>
-      <p class="meta">Where Tangent is headed next.</p>
+      <p class="meta">Where Offthread is headed next.</p>
 
       <p>
-        Soft persistence shipped in v1. Upcoming work hardens that layer, then
-        opens the same margin-note flow beyond Claude.
+        v1 shipped as Tangent on Claude. v2 is Offthread: the same gutter on
+        Claude, ChatGPT, and Gemini, with host adapters under the hood.
       </p>
 
       <ol class="roadmap">
         <li>
           <span class="roadmap__tag roadmap__tag--now">Shipped</span>
-          <h2>v1 — Claude margin notes</h2>
+          <h2>v2 — Offthread on Claude, ChatGPT, Gemini</h2>
           <p>
-            Highlight on claude.ai, ask in a side bubble, soft-persist threads
-            per conversation. Live on the
+            Rebrand, purple/white site, and host adapters for
+            <strong>claude.ai</strong>, <strong>ChatGPT</strong>, and
+            <strong>Gemini</strong>. Same
             <a
               href="https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi"
               >Chrome Web Store</a
-            >.
+            >
+            listing (item id unchanged).
           </p>
         </li>
         <li>
           <span class="roadmap__tag roadmap__tag--next">Next</span>
-          <h2>Persistence patches</h2>
+          <h2>Host API hardening</h2>
           <p>
-            Coming updates focus on re-anchoring reliability, clearer restore
-            behavior after long absences, and edge cases when Claude’s DOM or
-            message layout shifts. No product surface change—more durable
-            bubbles.
+            ChatGPT and Gemini web endpoints change often. Upcoming patches
+            re-verify stream shapes, improve re-anchoring when those DOMs
+            shift, and tighten persistence namespaces.
           </p>
         </li>
         <li>
           <span class="roadmap__tag roadmap__tag--later">Later</span>
-          <h2>v2 — Claude + ChatGPT</h2>
+          <h2>More hosts</h2>
           <p>
-            Generalize Tangent so the same gutter experience works on both
-            <strong>claude.ai</strong> and <strong>ChatGPT</strong>, with a
-            shared interaction model and host-specific adapters under the hood.
+            Additional AI chat surfaces behind the same adapter interface, if
+            demand shows up in Issues.
           </p>
         </li>
       </ol>
@@ -109,7 +128,7 @@
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <span>Tangent · MIT</span>
+        <span>Offthread · MIT</span>
         <div class="footer-links">
           <a href="index.html">Home</a>
           <a href="roadmap.html">Roadmap</a>

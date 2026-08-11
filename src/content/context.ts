@@ -1,4 +1,5 @@
 import { CONTEXT_MAX_CHARS, CONTEXT_WINDOW_CHARS } from "@/config";
+import { getHost } from "@/hosts/resolve";
 
 const BLOCK_SELECTOR = "p, li, blockquote, pre, h1, h2, h3, h4, h5, h6, td, th, dd, dt";
 
@@ -17,7 +18,7 @@ export function getSurroundingContext(range: Range, excerpt: string): string {
 
   const block =
     startEl.closest(BLOCK_SELECTOR) ??
-    startEl.closest(".standard-markdown") ??
+    startEl.closest(getHost().messageBlockSelector) ??
     null;
   if (!block) return "";
 

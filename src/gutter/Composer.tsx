@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { MODELS } from "@/api/types";
 import type { Usage } from "@/api/types";
+import { useStore } from "@/state/store";
 
 interface ComposerProps {
   disabled: boolean;
@@ -9,6 +9,8 @@ interface ComposerProps {
   placeholder: string;
   /** Preserve typed text across error/retry by lifting the initial value. */
   initialValue?: string;
+  /** When false, show a fixed label instead of the model dropdown (ChatGPT/Gemini). */
+  showModelPicker?: boolean;
   onModelChange: (model: string) => void;
   onSubmit: (text: string) => void;
   autoFocus?: boolean;
@@ -21,12 +23,18 @@ export function Composer({
   usage,
   placeholder,
   initialValue = "",
+  showModelPicker = true,
   onModelChange,
   onSubmit,
   autoFocus
 }: ComposerProps) {
   const [text, setText] = useState(initialValue);
   const ref = useRef<HTMLTextAreaElement>(null);
+  const availableModels = useStore((s) => s.availableModels);
+  const modelLabel =
+    availableModels.find((m) => m.id === model)?.label ??
+    availableModels[0]?.label ??
+    model;
 
   useEffect(() => {
     if (autoFocus) ref.current?.focus();
@@ -64,19 +72,25 @@ export function Composer({
         }}
       />
       <div className="tg-composer-footer">
-        <select
-          className="tg-model-select"
-          value={model}
-          disabled={disabled}
-          onChange={(e) => onModelChange(e.target.value)}
-          title="Model for this tangent"
-        >
-          {MODELS.map((m) => (
-            <option key={m.id} value={m.id}>
-              {m.label}
-            </option>
-          ))}
-        </select>
+        {showModelPicker ? (
+          <select
+            className="tg-model-select"
+            value={model}
+            disabled={disabled}
+            onChange={(e) => onModelChange(e.target.value)}
+            title="Model for this offthread"
+          >
+            {availableModels.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.label}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <span className="tg-model-locked" title="Fixed Offthread model for this API">
+            {modelLabel}
+          </span>
+        )}
         <span className="tg-usage" title="Session usage">
           {usage.percent == null ? "" : `${usage.percent}% used`}
         </span>

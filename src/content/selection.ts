@@ -1,5 +1,6 @@
 import { MIN_SELECTION_LENGTH, GUTTER_ROOT_ID } from "@/config";
 import { getSurroundingContext } from "./context";
+import { getHost } from "@/hosts/resolve";
 
 export interface SelectionCapture {
   /** Live Range (cloned) at the moment of capture. */
@@ -18,8 +19,8 @@ const REPLY_PROBE_MS = 1200;
 const REPLY_PROBE_INTERVAL = 16;
 
 /**
- * Watches for text selections and mounts "Ask Tangent" as a sibling to the
- * right of Claude's Reply control inside `[data-selection-tooltip]`.
+ * Watches for text selections and mounts "Ask Offthread". On Claude, waits
+ * for the host Reply tooltip so both appear together.
  *
  * Stays hidden until Reply's tooltip is present so both appear together —
  * no early park + snap.
@@ -57,7 +58,8 @@ export class SelectionWatcher {
     if (this.button?.contains(t)) return;
     // Clicks inside Claude's selection tooltip (Reply) shouldn't kill the probe
     // before our button has a chance to mount beside it.
-    if (t instanceof Element && t.closest("[data-selection-tooltip]")) return;
+    const tip = getHost().selection.tooltipSelector;
+    if (tip && t instanceof Element && t.closest(tip)) return;
     this.hide();
   };
 
@@ -116,8 +118,9 @@ export class SelectionWatcher {
     const gutter = document.getElementById(GUTTER_ROOT_ID);
     if (gutter && gutter.contains(container)) return false;
 
-    const main = document.querySelector("main");
-    if (main && !main.contains(container)) return false;
+    const rootSel = getHost().selectableRootSelector;
+    const root = document.querySelector(rootSel);
+    if (root && !root.contains(container)) return false;
 
     return true;
   }
@@ -125,11 +128,10 @@ export class SelectionWatcher {
   private ensureButton(): void {
     if (this.button) return;
     const btn = document.createElement("button");
-    btn.id = "tangent-ask-affordance";
+    btn.id = "offthread-ask-affordance";
     btn.type = "button";
-    // Label + Lucide line-squiggle, mirroring Reply's text+icon layout.
     btn.innerHTML = `
-      <span>Ask Tangent</span>
+      <span>Ask Offthread</span>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
            stroke-linejoin="round" aria-hidden="true" class="tg-ask-icon">
@@ -142,20 +144,42 @@ export class SelectionWatcher {
     this.button = btn;
   }
 
-  /** True when Claude's Reply control is in the selection tooltip. */
+  /**
+   * Host selection toolbar row to mount beside (Claude Reply / ChatGPT
+   * Ask ChatGPT|Start writing). Returns null while the host UI isn't ready.
+   */
   private findReplyRow(): HTMLElement | null {
-    const tooltip = document.querySelector<HTMLElement>("[data-selection-tooltip='true']");
-    if (!tooltip) return null;
+    const { tooltipSelector, replyButtonPattern } = getHost().selection;
+    if (!tooltipSelector) return null;
 
-    const row =
-      tooltip.querySelector<HTMLElement>(":scope > div.flex") ??
-      tooltip.querySelector<HTMLElement>("div.flex.items-center");
-    if (!row) return null;
+    const tooltips = Array.from(document.querySelectorAll<HTMLElement>(tooltipSelector));
+    for (const tooltip of tooltips) {
+      // Prefer the compact button group ChatGPT uses; fall back to Claude's flex row.
+      const row =
+        tooltip.querySelector<HTMLElement>("div.shadow-long.flex") ??
+        tooltip.querySelector<HTMLElement>(":scope > div.flex") ??
+        tooltip.querySelector<HTMLElement>("div.flex.items-center") ??
+        tooltip.querySelector<HTMLElement>("div.flex.overflow-hidden") ??
+        tooltip;
 
-    const hasReply = Array.from(row.querySelectorAll("button, [role='button']")).some((el) =>
-      /^Reply\b/i.test((el.textContent || "").replace(/\s+/g, " ").trim())
-    );
-    return hasReply ? row : null;
+      if (!replyButtonPattern.source || replyButtonPattern.source === "(?:)") {
+        return row;
+      }
+
+      const hasHostAction = Array.from(row.querySelectorAll("button, [role='button']")).some((el) => {
+        const label = (
+          el.getAttribute("aria-label") ||
+          el.getAttribute("title") ||
+          el.textContent ||
+          ""
+        )
+          .replace(/\s+/g, " ")
+          .trim();
+        return replyButtonPattern.test(label);
+      });
+      if (hasHostAction) return row;
+    }
+    return null;
   }
 
   /**
@@ -200,6 +224,12 @@ export class SelectionWatcher {
     const started = performance.now();
     const selectionRect = this.current?.rect;
     if (!selectionRect) return;
+
+    // Gemini (and hosts without a selection toolbar) — show fixed affordance now.
+    if (!getHost().selection.tooltipSelector) {
+      this.showFixedFallback(selectionRect);
+      return;
+    }
 
     const attempt = () => {
       if (this.tryMountWithReply()) {

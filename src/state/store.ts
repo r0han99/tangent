@@ -2,12 +2,13 @@ import { create } from "zustand";
 import { SYSTEM_INSTRUCTION, TITLE_EXCERPT_CHARS } from "@/config";
 import {
   ApiError,
-  DEFAULT_MODEL_ID,
   type ChatMessage,
+  type ModelOption,
   type ThreadId,
   type Usage
 } from "@/api/types";
 import { createThread, sendMessage, streamReply, getUsage, archiveThread } from "@/api/client";
+import { getHost } from "@/hosts/resolve";
 import { setHighlight, setHighlightActive, clearHighlight, clearAllHighlights } from "@/content/highlight";
 import { getMessageIndex } from "@/content/reanchor";
 
@@ -42,6 +43,8 @@ interface StoreState {
   activeId: string | null;
   usage: Usage;
   defaultModel: string;
+  /** Models shown in the bubble picker (host list; may refresh from live catalog). */
+  availableModels: ModelOption[];
   /** When true, closing a bubble archives its underlying thread. (PRD 6.5) */
   archiveOnClose: boolean;
   /** Conversation currently hydrated into the store (for persistence). */
@@ -61,6 +64,7 @@ interface StoreState {
   setModel: (id: string, model: string) => void;
   setDesiredTop: (id: string, top: number) => void;
   setDefaultModel: (model: string) => void;
+  setAvailableModels: (models: ModelOption[], defaultModel?: string) => void;
   setArchiveOnClose: (value: boolean) => void;
   setConversationId: (id: string | null) => void;
 
@@ -75,7 +79,7 @@ interface StoreState {
 const titleFor = (excerpt: string): string => {
   const trimmed = excerpt.replace(/\s+/g, " ").trim();
   const slice = trimmed.slice(0, TITLE_EXCERPT_CHARS);
-  return `Tangent: ${slice}${trimmed.length > TITLE_EXCERPT_CHARS ? "…" : ""}`;
+  return `Offthread: ${slice}${trimmed.length > TITLE_EXCERPT_CHARS ? "…" : ""}`;
 };
 
 /**
@@ -96,7 +100,8 @@ export const useStore = create<StoreState>((set, get) => ({
   bubbles: [],
   activeId: null,
   usage: { percent: null },
-  defaultModel: DEFAULT_MODEL_ID,
+  defaultModel: getHost().defaultModel,
+  availableModels: getHost().models,
   archiveOnClose: false,
   conversationId: null,
 
@@ -203,6 +208,24 @@ export const useStore = create<StoreState>((set, get) => ({
     })),
 
   setDefaultModel: (model) => set({ defaultModel: model }),
+
+  setAvailableModels: (models, defaultModel) => {
+    if (models.length === 0) return;
+    const ids = new Set(models.map((m) => m.id));
+    set((s) => {
+      const nextDefault =
+        defaultModel && ids.has(defaultModel)
+          ? defaultModel
+          : ids.has(s.defaultModel)
+            ? s.defaultModel
+            : models[0].id;
+      return {
+        availableModels: models,
+        defaultModel: nextDefault,
+        bubbles: s.bubbles.map((b) => (ids.has(b.model) ? b : { ...b, model: nextDefault }))
+      };
+    });
+  },
 
   setArchiveOnClose: (value) => set({ archiveOnClose: value }),
 

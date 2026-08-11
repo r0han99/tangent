@@ -1,13 +1,11 @@
-/**
- * Extract the claude.ai conversation id from the URL.
- * Matches /chat/<uuid> (and ignores project/share variants without a chat id).
- */
+import { getHost } from "@/hosts/resolve";
+
 export function getConversationId(href: string = location.href): string | null {
-  try {
-    const url = new URL(href);
-    const match = url.pathname.match(/\/chat\/([0-9a-f-]{36})/i);
-    return match?.[1] ?? null;
-  } catch {
-    return null;
-  }
+  return getHost().getConversationId(href);
+}
+
+/** Host-namespaced id used as the persistence map key. */
+export function getPersistConversationId(href: string = location.href): string | null {
+  const id = getHost().getConversationId(href);
+  return id ? getHost().persistKey(id) : null;
 }

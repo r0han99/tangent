@@ -21,7 +21,7 @@ export const BUBBLE_STACK_GAP = 12;
 /** Minimum characters before we bother offering a tangent. */
 export const MIN_SELECTION_LENGTH = 2;
 
-/** Auto-title format: "Tangent: <first N chars of excerpt>". (PRD 6.5) */
+/** Auto-title format: "Offthread: <first N chars of excerpt>". */
 export const TITLE_EXCERPT_CHARS = 40;
 
 /**
@@ -39,10 +39,10 @@ export const CONVERSATION_COLUMN_SELECTORS = [
 ];
 
 /** DOM id of the root element the gutter React tree mounts into. */
-export const GUTTER_ROOT_ID = "tangent-gutter-root";
+export const GUTTER_ROOT_ID = "offthread-gutter-root";
 
-/** Prefix for CSS Custom Highlight registrations: `tangent-<bubbleId>`. */
-export const HIGHLIGHT_PREFIX = "tangent";
+/** Prefix for CSS Custom Highlight registrations. */
+export const HIGHLIGHT_PREFIX = "offthread";
 
 /**
  * System instruction for every tangent thread. (PRD 5, revised)
@@ -69,10 +69,31 @@ export const CONTEXT_WINDOW_CHARS = 500;
 
 /** Storage keys for chrome.storage.sync (options) and local (persistence). */
 export const STORAGE_KEYS = {
+  defaultModel: "offthread.defaultModel",
+  archiveOnClose: "offthread.archiveOnClose",
+  dontAskArchive: "offthread.dontAskArchive",
+  /** Map of conversationId → persisted bubbles (chrome.storage.local). */
+  persist: "offthread.persist.v1"
+} as const;
+
+/**
+ * Chosen LLM API provider for Offthread bubbles on ChatGPT / Gemini pages.
+ * One provider + one key — usable on either host page.
+ */
+export const API_PROVIDER_STORAGE = "offthread.apiProvider";
+
+/** Single API key for the selected provider (chrome.storage.local). */
+export const API_KEY_STORAGE = "offthread.apiKey";
+
+/** Older dual-key slots — migrated once into API_KEY_STORAGE. */
+export const OPENAI_API_KEY_STORAGE = "offthread.openaiApiKey";
+export const GEMINI_API_KEY_STORAGE = "offthread.geminiApiKey";
+
+/** Pre-2.0 keys — migrated once on first read. */
+export const LEGACY_STORAGE_KEYS = {
   defaultModel: "tangent.defaultModel",
   archiveOnClose: "tangent.archiveOnClose",
   dontAskArchive: "tangent.dontAskArchive",
-  /** Map of conversationId → persisted bubbles (chrome.storage.local). */
   persist: "tangent.persist.v1"
 } as const;
 

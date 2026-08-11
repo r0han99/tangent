@@ -36,16 +36,26 @@ export function Gutter({ layout }: { layout: Layout }) {
     const tops: Record<string, number> = {};
     for (const b of list) {
       const range = getRange(b.id);
-      if (range) {
-        tops[b.id] = range.getBoundingClientRect().top;
-      } else {
-        // Fallback if the Range drifted; keep last known document offset.
+      if (range && rangeInDocument(range)) {
+        const rect = range.getBoundingClientRect();
+        // Detached/zero rects used to pin orphans to the top-right after a
+        // thread switch — skip those until persistence clears or re-anchors.
+        if (rect.width > 0 || rect.height > 0) {
+          tops[b.id] = rect.top;
+          continue;
+        }
+      }
+      if (range && rangeInDocument(range)) {
         tops[b.id] = b.desiredTop - window.scrollY;
       }
+      // else: omit — bubble stays unpositioned / hidden via missing top
     }
     setViewportTops(tops);
 
-    const first = list[0];
+    const first = list.find((b) => {
+      const r = getRange(b.id);
+      return r && rangeInDocument(r);
+    });
     const anchor = first ? getRange(first.id) : null;
     setGutterLeft(getGutterLeft(anchor));
   }, []);
@@ -99,8 +109,10 @@ export function Gutter({ layout }: { layout: Layout }) {
       if (!target) return;
       const root = document.getElementById(GUTTER_ROOT_ID);
       if (root?.contains(target)) return;
-      if ((target as Element).closest?.("#tangent-ask-affordance")) return;
+      if ((target as Element).closest?.("#offthread-ask-affordance")) return;
       if ((target as Element).closest?.("[data-selection-tooltip]")) return;
+      // ChatGPT selection action popover.
+      if ((target as Element).closest?.('[popover][aria-live="polite"]')) return;
       collapseIdleBubbles();
     };
     document.addEventListener("mousedown", onPointerDown, true);
@@ -154,11 +166,12 @@ export function Gutter({ layout }: { layout: Layout }) {
     });
   }, [bubbles]);
 
-  if (bubbles.length === 0) return null;
+  const anchored = bubbles.filter((b) => viewportTops[b.id] != null);
+  if (anchored.length === 0) return null;
 
-  const inputs: StackInput[] = bubbles.map((b) => ({
+  const inputs: StackInput[] = anchored.map((b) => ({
     id: b.id,
-    desiredTop: viewportTops[b.id] ?? b.desiredTop - window.scrollY,
+    desiredTop: viewportTops[b.id],
     height: heights[b.id] ?? ESTIMATED_HEIGHT
   }));
   const resolved = resolveStack(inputs);
@@ -172,10 +185,10 @@ export function Gutter({ layout }: { layout: Layout }) {
         left: `${gutterLeft}px`
       }}
     >
-      {bubbles.map((b) => {
+      {anchored.map((b) => {
         const r = byId.get(b.id);
         if (!r) return null;
-        const desiredViewportTop = viewportTops[b.id] ?? r.desiredTop;
+        const desiredViewportTop = viewportTops[b.id];
         return (
           <div key={b.id}>
             {r.displaced && (
@@ -209,4 +222,14 @@ function Connector({ desiredTop, resolvedTop }: { desiredTop: number; resolvedTo
       aria-hidden
     />
   );
+}
+
+function rangeInDocument(range: Range): boolean {
+  try {
+    const n = range.commonAncestorContainer;
+    const node = n.nodeType === Node.ELEMENT_NODE ? n : n.parentNode;
+    return !!node && document.contains(node);
+  } catch {
+    return false;
+  }
 }

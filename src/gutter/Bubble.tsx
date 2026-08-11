@@ -1,5 +1,6 @@
 import { CornerRightDown, ChevronUp, X } from "lucide-react";
 import { useStore, type Bubble as BubbleModel } from "@/state/store";
+import { getHost } from "@/hosts/resolve";
 import { Composer } from "./Composer";
 import { getRange } from "@/content/highlight";
 
@@ -113,6 +114,7 @@ export function Bubble({ bubble, active }: BubbleProps) {
             {bubble.status === "error" && bubble.error && (
               <ErrorState
                 kind={bubble.error.kind}
+                message={bubble.error.message}
                 detail={bubble.error.detail}
                 onRetry={() => retry(bubble.id)}
               />
@@ -126,6 +128,7 @@ export function Bubble({ bubble, active }: BubbleProps) {
             autoFocus={active && !hasFirstQuestion && !bubble.collapsed}
             initialValue={lastUserText}
             placeholder={hasFirstQuestion ? "Follow up…" : "Ask about this excerpt…"}
+            showModelPicker={getHost().id === "claude"}
             onModelChange={(m) => setModel(bubble.id, m)}
             onSubmit={(text) => ask(bubble.id, text)}
           />
@@ -137,31 +140,32 @@ export function Bubble({ bubble, active }: BubbleProps) {
 
 function ErrorState({
   kind,
+  message,
   detail,
   onRetry
 }: {
   kind: string;
+  message?: string;
   detail?: string;
   onRetry: () => void;
 }) {
-  const message =
+  const text =
     kind === "auth"
-      ? "Session expired. Reload the page to re-authenticate."
+      ? message || "Session expired. Reload the page to re-authenticate."
       : kind === "model"
-        ? detail || "This model isn't available. Pick another from the dropdown."
+        ? message || detail || "This model isn't available. Pick another from the dropdown."
         : kind === "rate_limit"
-          ? `Rate limit reached${detail ? `: ${detail}` : "."}`
+          ? message || `Rate limit reached${detail ? `: ${detail}` : "."}`
           : kind === "network"
-            ? "No network. Your question is saved."
-            : detail || "Something went wrong.";
+            ? message || "No network. Your question is saved."
+            : message || detail || "Something went wrong.";
+  // Auth often needs a settings change (API key) or reload — still offer Retry.
   return (
     <div className={`tg-error tg-error--${kind}`}>
-      <span className="tg-error-msg">{message}</span>
-      {kind !== "auth" && (
-        <button type="button" className="tg-retry" onClick={onRetry}>
-          Retry
-        </button>
-      )}
+      <span className="tg-error-msg">{text}</span>
+      <button type="button" className="tg-retry" onClick={onRetry}>
+        Retry
+      </button>
     </div>
   );
 }

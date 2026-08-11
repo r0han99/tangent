@@ -1,41 +1,40 @@
 <p align="center">
-  <img src="tangent.png" alt="Tangent logo" width="120" />
+  <img src="offthread-transparent.png" alt="Offthread logo" width="120" />
 </p>
 
-<h1 align="center">Tangent</h1>
+<h1 align="center">Offthread</h1>
 
 <p align="center">
-  Margin comments for <a href="https://claude.ai">claude.ai</a>
+  Margin notes for Claude, ChatGPT, and Gemini
 </p>
 
 <p align="center">
   <a href="https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi">
     <img
-      src="https://img.shields.io/badge/Chrome_Web_Store-Add_to_Chrome-D97757?style=for-the-badge&logo=googlechrome&logoColor=white"
+      src="https://img.shields.io/badge/Chrome_Web_Store-Add_to_Chrome-4A0A77?style=for-the-badge&logo=googlechrome&logoColor=white"
       alt="Add to Chrome — Chrome Web Store"
     />
   </a>
 </p>
 
-Highlight any span of a Claude message, a bubble opens in a right-hand gutter next
-to that text, and you ask a short question about just that excerpt. The answer
-streams into the bubble. **The main conversation is never touched.**
+Highlight any span in a reply, a bubble opens in a right-hand gutter, and you ask
+a short question about just that excerpt. The answer streams into the bubble.
+**The main conversation is never touched.**
 
-The model behind the bubble is your own already-authenticated Claude session — no
-second login, no API key.
+Uses the session you already have on that host — no second login, no API key.
 
-> Chrome extension, Manifest V3. [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi) · [Site](https://r0han99.github.io/tangent/) · [`tangent-prd-mvp.md`](./tangent-prd-mvp.md)
+Formerly **Tangent**. Same Chrome Web Store item.
+
+> Chrome extension, Manifest V3. [Install from the Chrome Web Store](https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi) · [Site](https://r0han99.github.io/tangent/) · [`offthread-prd-v2.md`](./offthread-prd-v2.md)
 
 ## How it works
 
-- The content script runs inside `claude.ai`, so `fetch` carries your session
-  cookie automatically. All network calls are isolated in a single file,
-  [`src/api/client.ts`](./src/api/client.ts) — the only place `fetch` appears.
-- Highlights are painted with the **CSS Custom Highlight API**, not `<span>`
-  wrapping, so React re-renders during streaming can't clobber them.
-- Each bubble is its own real claude.ai side thread. Its context is exactly: a
-  system instruction, the highlighted excerpt, your question, and the bubble's
-  own prior turns — never the main transcript.
+- A content script runs on Claude, ChatGPT, and Gemini. `fetch` uses that
+  page’s session. Host-specific network lives in [`src/hosts/`](./src/hosts/);
+  [`src/api/client.ts`](./src/api/client.ts) is the shared facade.
+- Highlights use the **CSS Custom Highlight API**, not `<span>` wrapping.
+- Each bubble is its own side thread on the current host. Context is: system
+  instruction, excerpt, your question, and that bubble’s prior turns.
 
 ## Develop
 
@@ -52,11 +51,11 @@ npm run pack     # build + zip dist/ for Chrome Web Store upload
 1. `npm run build` (or `npm run dev`).
 2. Open `chrome://extensions`, enable **Developer mode**.
 3. **Load unpacked** → select the `dist/` folder.
-4. Open `claude.ai`, select text in any message, click **Ask Tangent**.
+4. Open Claude, ChatGPT, or Gemini, select text, click **Ask Offthread**.
 
 ## Chrome Web Store
 
-**Install:** [Tangent on the Chrome Web Store](https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi)
+**Install:** [Offthread on the Chrome Web Store](https://chromewebstore.google.com/detail/ieekphhmaohoodalgaboiolcmmpoagmi)
 
 Public site (GitHub Pages from `main` / root):
 
@@ -67,7 +66,7 @@ Public site (GitHub Pages from `main` / root):
 Listing / pack notes for updates live in [`STORE.md`](./STORE.md). For a new store build:
 
 ```bash
-npm run pack   # writes tangent-<version>.zip at the repo root
+npm run pack   # writes offthread-<version>.zip at the repo root
 ```
 
 ## Project layout
@@ -75,8 +74,9 @@ npm run pack   # writes tangent-<version>.zip at the repo root
 ```
 src/
   content/   entry, selection capture, highlight painting, host layout
+  hosts/     claude / chatgpt / gemini adapters (DOM + session API)
   gutter/    Gutter (stacking), Bubble, Composer, stack.ts
-  api/       client.ts (ONLY network file), sse.ts, types.ts
+  api/       client.ts facade, sse.ts, types.ts
   state/     zustand store: bubbles, active bubble, usage
   options/   options page (default model, archive-on-close)
   config.ts  every layout/behavior constant and the system instruction

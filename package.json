@@ -1,7 +1,7 @@
 {
-  "name": "tangent",
-  "version": "1.0.0",
-  "description": "Margin comments for claude.ai. Highlight text, ask a question in a side bubble, never touch the main thread.",
+  "name": "offthread",
+  "version": "2.0.0",
+  "description": "Margin notes for Claude, ChatGPT, and Gemini. Highlight text, ask in a side bubble, never touch the main thread.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,6 +13,7 @@
   "author": "Rohan Sai Nalla",
   "license": "MIT",
   "dependencies": {
+    "js-sha3": "^0.9.3",
     "lucide-react": "^1.31.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
